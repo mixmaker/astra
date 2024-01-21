@@ -25,13 +25,22 @@ class About extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  CircleAvatar(
-                    radius: 50,
+                  ClipRect(
+                    clipBehavior: Clip.antiAlias,
+                    child: Image.asset('assets/icon/iconwt.png', width: 180),
                   ),
-                  Text('pixelverse',
-                      style: GoogleFonts.raleway(
-                          textStyle: const TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.w600))),
+                  // CircleAvatar(
+                  //   radius: 50,
+                  //   child: ClipOval(
+                  //       child: Image.asset(
+                  //     'assets/icon/icon.png',
+                  //     scale: 0.3,
+                  //   )),
+                  // ),
+                  // Text('pixelverse',
+                  //     style: GoogleFonts.raleway(
+                  //         textStyle: const TextStyle(
+                  //             fontSize: 28, fontWeight: FontWeight.w600))),
                   Text('0.1',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.raleway(
@@ -72,7 +81,7 @@ class About extends StatelessWidget {
                               fontSize: 14,
                               fontWeight: FontWeight.w600))),
                   Container(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -85,10 +94,10 @@ class About extends StatelessWidget {
                           ),
                         ),
                         InkWell(
-                          onTap: () => launchURL(
-                              Uri.parse('https://github.com/mixmaker')),
+                          onTap: () => launchURL(Uri.parse(
+                              'https://github.com/mixmaker/pixelverse')),
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 4),
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(

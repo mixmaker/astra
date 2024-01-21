@@ -24,8 +24,8 @@ class Settings extends StatelessWidget {
                 curve: Curves.easeOut,
                 horizontalOffset: 20,
                 child: FadeInAnimation(
+                  duration: const Duration(milliseconds: 400),
                   child: widget,
-                  duration: Duration(milliseconds: 400),
                   // delay: Duration(milliseconds: 100),
                 ),
               ),
@@ -59,8 +59,8 @@ class Settings extends StatelessWidget {
                   curve: Curves.easeOut,
                   horizontalOffset: 40,
                   child: FadeInAnimation(
+                    duration: const Duration(milliseconds: 400),
                     child: widget,
-                    duration: Duration(milliseconds: 400),
                     // delay: Duration(milliseconds: 100),
                   ),
                 ),

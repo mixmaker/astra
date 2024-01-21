@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts:
+  http:
   flutter_staggered_grid_view:
   cached_network_image:
   async_wallpaper:
@@ -17,6 +18,8 @@ dependencies:
   flutter_staggered_animations:
   animations:
   persistent_bottom_nav_bar_v2:
+  get:
+  progressive_image:
   
 dev_dependencies:
   flutter_test:
@@ -26,16 +29,19 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
+  assets:
+    - assets/icon/
 flutter_launcher_icons:
   android: "launcher_icon"
+  adaptive_icon_background: "#FBECFF"
   ios: true
   image_path: "assets/icon/icon.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
+  remove_alpha_ios: true
   web:
     generate: true
     image_path: "assets/icon/icon.png"
-    background_color: "#fff"
+    background_color: "#FBECFF"
     theme_color: "#4FC3F7"
   windows:
     generate: true

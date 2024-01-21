@@ -1,15 +1,31 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:pixelverse/screens/collections.dart';
 import 'package:pixelverse/screens/home.dart';
 import 'package:pixelverse/screens/settings.dart';
+import 'package:pixelverse/state/state.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'components/bottom_nav_bar.dart';
 
 void main() {
   runApp(const MainApp());
 }
+
+ThemeData _darkTheme = ThemeData(
+    hintColor: Colors.red,
+    brightness: Brightness.dark,
+    primaryColor: Colors.amber,
+    bottomNavigationBarTheme:
+        BottomNavigationBarThemeData(backgroundColor: Colors.grey[900]));
+
+ThemeData _lightTheme = ThemeData(
+    hintColor: Colors.pink,
+    brightness: Brightness.light,
+    primaryColor: Colors.lightBlue[300],
+    bottomNavigationBarTheme:
+        const BottomNavigationBarThemeData(backgroundColor: Colors.white));
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
@@ -19,6 +35,9 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   int currentPageIndex = 0;
+
+//instantiate controller for state
+  final Controller appState = Get.put(Controller());
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -30,10 +49,18 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
         theme: ThemeData(
           splashColor: Colors.transparent,
-          pageTransitionsTheme: PageTransitionsTheme(builders: {
+          useMaterial3: true,
+          pageTransitionsTheme: const PageTransitionsTheme(builders: {
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),
           }),
         ),
+        // darkTheme: _darkTheme.copyWith(
+        //   splashColor: Colors.transparent,
+        //   pageTransitionsTheme: const PageTransitionsTheme(builders: {
+        //     TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+        //   }),
+        // ),
+        // themeMode: ThemeMode.system,
         // theme: ThemeData(
         //     textTheme: GoogleFonts.ralewayTextTheme(
         //       Theme.of(context).textTheme, //font changes
@@ -80,12 +107,13 @@ class _MainAppState extends State<MainApp> {
                 ),
               ],
               currentIndex: currentPageIndex,
-              selectedItemColor: Colors.lightBlue[300],
+              selectedItemColor: Theme.of(context).colorScheme.primary,
               showUnselectedLabels: false,
               showSelectedLabels: false,
               elevation: 0,
               iconSize: 25,
-              backgroundColor: Colors.white,
+              backgroundColor:
+                  Theme.of(context).bottomNavigationBarTheme.backgroundColor,
               onTap: (int index) {
                 setState(() {
                   currentPageIndex = index;
@@ -93,7 +121,7 @@ class _MainAppState extends State<MainApp> {
               },
             ),
             body: PageTransitionSwitcher(
-                child: [Home(), Collections(), Settings()][currentPageIndex],
+                child: [const Home(), Collections(), const Settings()][currentPageIndex],
                 // duration: Duration(milliseconds: 375),
                 transitionBuilder:
                     (child, primaryAnimation, secondaryAnimation) =>

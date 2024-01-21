@@ -3,7 +3,7 @@
     "short_name": "pixelverse",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#fff",
+    "background_color": "#FBECFF",
     "theme_color": "#4FC3F7",
     "description": "A new Flutter project.",
     "orientation": "portrait-primary",

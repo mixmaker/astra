@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:progressive_image/progressive_image.dart';
+import '../models/photo.dart';
 
 class ImageView extends StatefulWidget {
-  final Map info;
+  final Photo info;
   const ImageView({super.key, required this.info});
 
   @override
@@ -26,6 +28,7 @@ class HexColor extends Color {
 class _ImageViewState extends State<ImageView> {
   late bool goToHome;
   String _wallpaperUrlHome = 'Unknown';
+  String _wallpaperUrlLock = 'Unknown';
   // late final VoidCallback setWallpaperHome;
   // Platform messages are asynchronous, so we initialize in an async method.
   setWallpaperHome(
@@ -33,7 +36,12 @@ class _ImageViewState extends State<ImageView> {
     required type,
   }) async {
     setState(() {
-      _wallpaperUrlHome = 'Loading';
+      if (type == AsyncWallpaper.HOME_SCREEN) {
+        _wallpaperUrlHome = 'Loading';
+      }
+      if (type == AsyncWallpaper.LOCK_SCREEN) {
+        _wallpaperUrlLock = 'Loading';
+      }
     });
     String result;
 
@@ -58,13 +66,21 @@ class _ImageViewState extends State<ImageView> {
     if (!mounted) return null;
 
     setState(() {
-      _wallpaperUrlHome = result;
+      if (type == AsyncWallpaper.HOME_SCREEN) {
+        _wallpaperUrlHome = result;
+      }
+      if (type == AsyncWallpaper.LOCK_SCREEN) {
+        _wallpaperUrlLock = result;
+      }
     });
     // return null;
   }
 
   @override
   Widget build(BuildContext context) {
+    var textColor = HexColor(widget.info.avgColor).computeLuminance() > 0.5
+        ? Colors.black
+        : Colors.white;
     return Scaffold(
       appBar: CupertinoNavigationBar(
         leading: GestureDetector(
@@ -73,55 +89,116 @@ class _ImageViewState extends State<ImageView> {
               Icons.arrow_back_ios_new_rounded,
               size: 20,
             )),
-        middle: Text('photo by ${widget.info['photographer']}',
+        middle: Text('photo by ${widget.info.photographer}',
             style: GoogleFonts.raleway(
                 textStyle: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.w600))),
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ))),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: GestureDetector(
-        onTap: () => setWallpaperHome(widget.info['src']['large2x'],
-            type: AsyncWallpaper.HOME_SCREEN),
-        child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              color: HexColor(widget.info['avg_color']),
-            ),
-            child: AnimatedCrossFade(
-              duration: const Duration(milliseconds: 250),
-              firstCurve: Curves.easeInOut,
-              secondCurve: Curves.easeInOut,
-              firstChild: Padding(
-                // padding: const EdgeInsets.all(8.0),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                child: Text(
-                  'Set on homescreen',
-                  style: GoogleFonts.raleway(
-                      textStyle: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w600)),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () => setWallpaperHome(widget.info.src.large2X,
+                type: AsyncWallpaper.LOCK_SCREEN),
+            child: Container(
+                margin: const EdgeInsets.only(left: 0.5),
+                decoration: BoxDecoration(
+                  borderRadius:
+                      const BorderRadius.horizontal(left: Radius.circular(18)),
+                  color: HexColor(widget.info.avgColor),
                 ),
-              ),
-              secondChild: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                child: SizedBox(
-                    height: 25, width: 25, child: CircularProgressIndicator()),
-              ),
-              crossFadeState: _wallpaperUrlHome == 'Loading'
-                  ? CrossFadeState.showSecond
-                  : CrossFadeState.showFirst,
-              // vsync: this,
-              // duration: Duration(milliseconds: 500),
-              // curve: Curves.fastOutSlowIn,
-            )),
+                child: AnimatedCrossFade(
+                  duration: const Duration(milliseconds: 250),
+                  firstCurve: Curves.easeInOut,
+                  secondCurve: Curves.easeInOut,
+                  firstChild: Padding(
+                    // padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18, vertical: 10),
+                    child: Text(
+                      'Set on lockscreen',
+                      style: GoogleFonts.raleway(
+                          textStyle: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: textColor)),
+                    ),
+                  ),
+                  secondChild: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                    child: SizedBox(
+                        height: 23,
+                        width: 23,
+                        child: CircularProgressIndicator(color: textColor)),
+                  ),
+                  crossFadeState: _wallpaperUrlLock == 'Loading'
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  // vsync: this,
+                  // duration: Duration(milliseconds: 500),
+                  // curve: Curves.fastOutSlowIn,
+                )),
+          ),
+          // Spacer(),
+          GestureDetector(
+            onTap: () => setWallpaperHome(widget.info.src.large2X,
+                type: AsyncWallpaper.HOME_SCREEN),
+            child: Container(
+                margin: const EdgeInsets.only(left: 0.5),
+                decoration: BoxDecoration(
+                  borderRadius:
+                      const BorderRadius.horizontal(right: Radius.circular(18)),
+                  color: HexColor(widget.info.avgColor),
+                ),
+                child: AnimatedCrossFade(
+                  duration: const Duration(milliseconds: 250),
+                  firstCurve: Curves.easeInOut,
+                  secondCurve: Curves.easeInOut,
+                  firstChild: Padding(
+                    // padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18, vertical: 10),
+                    child: Text(
+                      'Set on homescreen',
+                      style: GoogleFonts.raleway(
+                          textStyle: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: textColor)),
+                    ),
+                  ),
+                  secondChild: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                    child: SizedBox(
+                        height: 23,
+                        width: 23,
+                        child: CircularProgressIndicator(
+                          color: textColor,
+                        )),
+                  ),
+                  crossFadeState: _wallpaperUrlHome == 'Loading'
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  // vsync: this,
+                  // duration: Duration(milliseconds: 500),
+                  // curve: Curves.fastOutSlowIn,
+                )),
+          ),
+        ],
       ),
       body: Center(
-        child: CachedNetworkImage(
-          imageUrl: widget.info['src']['large2x'],
-          placeholder: (context, url) => const CircularProgressIndicator(),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
-        ),
-      ),
+          child: ProgressiveImage(
+        width: widget.info.width.toDouble(),
+        height: widget.info.height.toDouble(),
+        fit: BoxFit.fitWidth,
+        placeholder: const CachedNetworkImageProvider(
+            'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM='),
+        thumbnail: NetworkImage(widget.info.src.tiny),
+        image: NetworkImage(widget.info.src.large2X),
+      )),
     );
   }
 }

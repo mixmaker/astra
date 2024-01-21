@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pixelverse/state/state.dart';
 
 class AppearanceSettings extends StatefulWidget {
   const AppearanceSettings({super.key});
@@ -9,7 +11,7 @@ class AppearanceSettings extends StatefulWidget {
   State<AppearanceSettings> createState() => _AppearanceSettingsState();
 }
 
-bool isDarkMode = false;
+final Controller appState = Get.find();
 
 class _AppearanceSettingsState extends State<AppearanceSettings> {
   @override
@@ -30,7 +32,7 @@ class _AppearanceSettingsState extends State<AppearanceSettings> {
       body: Padding(
         padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           height: 59,
           // color: Colors.amber,
           child: Row(
@@ -58,13 +60,16 @@ class _AppearanceSettingsState extends State<AppearanceSettings> {
                   )
                 ],
               ),
-              Switch(
-                  value: isDarkMode,
-                  onChanged: (bool value) {
-                    setState(() {
-                      isDarkMode = value;
+              GetBuilder<Controller>(builder: (state) {
+                return Switch(
+                    value: state.isLightTheme.value,
+                    onChanged: (bool value) {
+                      state.isLightTheme.value = value;
+                      Get.changeThemeMode(state.isLightTheme.value
+                          ? ThemeMode.light
+                          : ThemeMode.dark);
                     });
-                  })
+              })
             ],
           ),
         ),
