@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pixelverse/state/state.dart';
@@ -46,8 +45,7 @@ class _CollectionPageState extends State<CollectionPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-          backgroundColor:
-              CupertinoColors.extraLightBackgroundGray.withOpacity(0.5),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           leading: GestureDetector(
               onTap: () => Navigator.pop(context),
               child: const Icon(
@@ -56,11 +54,13 @@ class _CollectionPageState extends State<CollectionPage> {
               )),
           middle: Text(widget.colTitle,
               style: GoogleFonts.raleway(
-                  textStyle: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w600)))),
+                  textStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600)))),
       child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          color: Colors.grey[50],
+          // color: Colors.grey[50],
           height: 1000,
           child: Center(
             child: Padding(
@@ -70,12 +70,13 @@ class _CollectionPageState extends State<CollectionPage> {
                   if (state.futureCollectionFromId.value == null) {
                     return const CircularProgressIndicator();
                   } else {
-                    return MasonryGridView.builder(
+                    return GridView.builder(
                         controller: _scrollController,
                         physics: const BouncingScrollPhysics(),
-                        gridDelegate:
-                            const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
+                          childAspectRatio: MediaQuery.of(context).size.width /
+                              (MediaQuery.of(context).size.height / 1.4),
                         ),
                         itemCount:
                             state.futureCollectionFromId.value?.media.length,

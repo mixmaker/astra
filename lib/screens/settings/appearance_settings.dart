@@ -4,20 +4,16 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pixelverse/state/state.dart';
 
-class AppearanceSettings extends StatefulWidget {
-  const AppearanceSettings({super.key});
+class AppearanceSettings extends StatelessWidget {
+  AppearanceSettings({super.key});
 
-  @override
-  State<AppearanceSettings> createState() => _AppearanceSettingsState();
-}
+  final Controller appState = Get.find();
 
-final Controller appState = Get.find();
-
-class _AppearanceSettingsState extends State<AppearanceSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         leading: GestureDetector(
             onTap: () => Navigator.pop(context),
             child: const Icon(
@@ -26,8 +22,10 @@ class _AppearanceSettingsState extends State<AppearanceSettings> {
             )),
         middle: Text('Appearance Settings',
             style: GoogleFonts.raleway(
-                textStyle: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.w600))),
+                textStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600))),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
@@ -54,7 +52,10 @@ class _AppearanceSettingsState extends State<AppearanceSettings> {
                     style: GoogleFonts.raleway(
                         textStyle: TextStyle(
                             height: 0.9,
-                            color: Colors.grey.shade700,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer
+                                .withAlpha(200),
                             fontSize: 12,
                             fontWeight: FontWeight.w600)),
                   )
@@ -62,12 +63,15 @@ class _AppearanceSettingsState extends State<AppearanceSettings> {
               ),
               GetBuilder<Controller>(builder: (state) {
                 return Switch(
-                    value: state.isLightTheme.value,
+                    value: state.isDarkTheme.value,
+                    // value: false,
                     onChanged: (bool value) {
-                      state.isLightTheme.value = value;
-                      Get.changeThemeMode(state.isLightTheme.value
-                          ? ThemeMode.light
-                          : ThemeMode.dark);
+                      // print(value);
+                      state.changeTheme(value);
+                      // Get.changeTheme(ThemeData.dark());
+                      // Get.changeThemeMode(state.isDarkTheme.value
+                      //     ? ThemeMode.light
+                      //     : ThemeMode.dark);
                     });
               })
             ],

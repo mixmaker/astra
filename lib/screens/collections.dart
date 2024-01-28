@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,10 @@ class Collections extends StatelessWidget {
                       ' featured',
                       style: GoogleFonts.raleway(
                           textStyle: TextStyle(
-                              color: Colors.grey.shade700,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer
+                                  .withAlpha(200),
                               fontSize: 14,
                               height: 0.9,
                               fontWeight: FontWeight.w400)),
@@ -106,7 +110,7 @@ class Collections extends StatelessWidget {
                                     image: DecorationImage(
                                         image: NetworkImage(setOfBgs[
                                             random.nextInt(setOfBgs.length)]),
-                                        opacity: 0.7,
+                                        opacity: 0.4,
                                         fit: BoxFit.cover),
                                   ),
                                   alignment: Alignment.center,
@@ -119,16 +123,23 @@ class Collections extends StatelessWidget {
                                         Text(
                                           e.title,
                                           style: GoogleFonts.raleway(
-                                              textStyle: const TextStyle(
-                                            fontSize: 18,
-                                          )),
+                                              textStyle: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimaryContainer
+                                                      .withAlpha(200))),
                                         ),
                                         Text(
                                           '${e.photosCount} walls',
                                           style: GoogleFonts.raleway(
                                               textStyle: TextStyle(
                                             fontSize: 12,
-                                            color: Colors.grey.shade800,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondaryContainer
+                                                .withAlpha(200),
                                           )),
                                         ),
                                       ])),

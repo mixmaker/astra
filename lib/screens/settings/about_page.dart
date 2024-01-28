@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-class About extends StatelessWidget {
+class About extends StatefulWidget {
   const About({super.key});
+
+  @override
+  State<About> createState() => _AboutState();
+}
+
+String version = '0.1';
+String code = '1';
+
+class _AboutState extends State<About> {
+  void getPackageInfo() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      version = packageInfo.version;
+      code = packageInfo.buildNumber;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getPackageInfo();
+  }
 
   //launch external browser
   launchURL(Uri url) async {
@@ -41,12 +64,26 @@ class About extends StatelessWidget {
                   //     style: GoogleFonts.raleway(
                   //         textStyle: const TextStyle(
                   //             fontSize: 28, fontWeight: FontWeight.w600))),
-                  Text('0.1',
+                  Text(version,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.raleway(
                           textStyle: TextStyle(
-                              color: Colors.grey.shade700,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer
+                                  .withAlpha(200),
                               fontSize: 18,
+                              fontWeight: FontWeight.w500))),
+                  Text('buildNumber $code',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.raleway(
+                          textStyle: TextStyle(
+                              height: 0.8,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer
+                                  .withAlpha(200),
+                              fontSize: 14,
                               fontWeight: FontWeight.w500))),
                 ],
               ),
@@ -57,7 +94,10 @@ class About extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: GoogleFonts.raleway(
                           textStyle: TextStyle(
-                              color: Colors.grey.shade700,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer
+                                  .withAlpha(200),
                               fontSize: 14,
                               fontWeight: FontWeight.w600))),
                   Padding(
@@ -77,7 +117,10 @@ class About extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: GoogleFonts.raleway(
                           textStyle: TextStyle(
-                              color: Colors.grey.shade700,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer
+                                  .withAlpha(200),
                               fontSize: 14,
                               fontWeight: FontWeight.w600))),
                   Container(
@@ -99,6 +142,7 @@ class About extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 4),
                             decoration: BoxDecoration(
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
                                   width: 1,
@@ -116,6 +160,7 @@ class About extends StatelessWidget {
                                 Text('Visit on Github ',
                                     style: GoogleFonts.raleway(
                                         textStyle: const TextStyle(
+                                            color: Colors.black87,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600)))
                               ],
@@ -127,11 +172,11 @@ class About extends StatelessWidget {
                   ),
                 ],
               ),
-              Text('A project by Shoumik Kumbhakar',
+              Text('Made with ♥️ by Shoumik Kumbhakar',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.raleway(
                       textStyle: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w600))),
+                          fontSize: 16, fontWeight: FontWeight.w600))),
             ],
           ),
         ),

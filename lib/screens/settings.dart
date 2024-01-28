@@ -40,7 +40,10 @@ class Settings extends StatelessWidget {
                   ' make it yours',
                   style: GoogleFonts.raleway(
                       textStyle: TextStyle(
-                          color: Colors.grey.shade700,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer
+                              .withAlpha(200),
                           fontSize: 14,
                           height: 0.9,
                           fontWeight: FontWeight.w400)),
@@ -64,7 +67,7 @@ class Settings extends StatelessWidget {
                     // delay: Duration(milliseconds: 100),
                   ),
                 ),
-                children: const [
+                children: [
                   SettingsCard(
                       title: 'Appearance',
                       subtitle: 'tweak the look & feel of the app',
@@ -103,7 +106,9 @@ class SettingsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: GestureDetector(
+      child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         onTap: () => Navigator.push(
             context, CupertinoPageRoute(builder: (context) => screen)),
         child: Row(
@@ -122,7 +127,10 @@ class SettingsCard extends StatelessWidget {
                   subtitle,
                   style: GoogleFonts.raleway(
                       textStyle: TextStyle(
-                          color: Colors.grey.shade700,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer
+                              .withAlpha(200),
                           fontSize: 14,
                           height: 1.3,
                           fontWeight: FontWeight.w400)),

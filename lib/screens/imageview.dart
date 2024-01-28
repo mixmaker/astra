@@ -82,16 +82,21 @@ class _ImageViewState extends State<ImageView> {
         ? Colors.black
         : Colors.white;
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: CupertinoNavigationBar(
+        backgroundColor: HexColor(widget.info.avgColor), //statusbar issue
+        // backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         leading: GestureDetector(
             onTap: () => Navigator.pop(context),
-            child: const Icon(
+            child: Icon(
               Icons.arrow_back_ios_new_rounded,
               size: 20,
+              color: textColor,
             )),
         middle: Text('photo by ${widget.info.photographer}',
             style: GoogleFonts.raleway(
-                textStyle: const TextStyle(
+                textStyle: TextStyle(
+              color: textColor,
               fontSize: 20,
               fontWeight: FontWeight.w600,
             ))),
@@ -128,7 +133,8 @@ class _ImageViewState extends State<ImageView> {
                     ),
                   ),
                   secondChild: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18, vertical: 10),
                     child: SizedBox(
                         height: 23,
                         width: 23,
@@ -171,7 +177,8 @@ class _ImageViewState extends State<ImageView> {
                     ),
                   ),
                   secondChild: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18, vertical: 10),
                     child: SizedBox(
                         height: 23,
                         width: 23,
@@ -190,14 +197,18 @@ class _ImageViewState extends State<ImageView> {
         ],
       ),
       body: Center(
-          child: ProgressiveImage(
-        width: widget.info.width.toDouble(),
-        height: widget.info.height.toDouble(),
-        fit: BoxFit.fitWidth,
-        placeholder: const CachedNetworkImageProvider(
-            'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM='),
-        thumbnail: NetworkImage(widget.info.src.tiny),
-        image: NetworkImage(widget.info.src.large2X),
+          child: AspectRatio(
+        aspectRatio: MediaQuery.of(context).size.width /
+            (MediaQuery.of(context).size.height / 1.4),
+        child: ProgressiveImage(
+          width: widget.info.width.toDouble(),
+          height: widget.info.height.toDouble(),
+          fit: BoxFit.cover,
+          placeholder: const CachedNetworkImageProvider(
+              'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM='),
+          thumbnail: NetworkImage(widget.info.src.tiny),
+          image: NetworkImage(widget.info.src.large2X),
+        ),
       )),
     );
   }

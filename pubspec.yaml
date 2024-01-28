@@ -1,7 +1,7 @@
 name: pixelverse
-description: A new Flutter project.
+description: A wallpaper app built with flutter.
 publish_to: 'none'
-version: 0.1.0
+version: 0.1.1+2
 
 environment:
   sdk: '>=3.0.2 <4.0.0'
@@ -11,16 +11,15 @@ dependencies:
     sdk: flutter
   google_fonts:
   http:
-  flutter_staggered_grid_view:
   cached_network_image:
   async_wallpaper:
   url_launcher:
   flutter_staggered_animations:
   animations:
-  persistent_bottom_nav_bar_v2:
   get:
   progressive_image:
-  
+  package_info_plus:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

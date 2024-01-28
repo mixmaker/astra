@@ -10,7 +10,13 @@ class Controller extends GetxController {
   var futureCurated = Rxn<Curated>();
   var futureFeaturedColl = Rxn<FeaturedCollections>();
   var futureCollectionFromId = Rxn<CollectionfromId>();
-  RxBool isLightTheme = false.obs;
+  var isDarkTheme = RxBool(false);
+
+  void changeTheme(state) {
+    isDarkTheme.value = state;
+    Get.changeThemeMode(Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+    update();
+  }
 
   @override
   Future<void> onInit() async {
@@ -57,7 +63,7 @@ class Controller extends GetxController {
 
 Future getCuratedPhotos({required int page}) async {
   final response = await http.get(
-      Uri.parse('https://api.pexels.com/v1/curated?per_page=25&page=$page'),
+      Uri.parse('https://api.pexels.com/v1/curated?per_page=26&page=$page'),
       headers: {
         "Authorization":
             "563492ad6f91700001000001483cce7cc55d42279bd98f44bf282a0c"
@@ -94,7 +100,8 @@ Future getFeaturedCollections() async {
 
 Future getCollectionfromId({required String id, required int page}) async {
   final response = await http.get(
-      Uri.parse('https://api.pexels.com/v1/collections/$id?page=$page'),
+      Uri.parse(
+          'https://api.pexels.com/v1/collections/$id?page=$page&per_page=26'),
       headers: {
         "Authorization":
             "563492ad6f91700001000001483cce7cc55d42279bd98f44bf282a0c"

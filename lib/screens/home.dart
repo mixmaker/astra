@@ -1,10 +1,8 @@
-import 'package:get/get.dart';
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:pixelverse/components/imgcard.dart';
-import 'package:pixelverse/state/state.dart';
+import 'package:pixelverse/screens/collections.dart';
+import 'package:pixelverse/screens/curated.dart';
+import 'package:pixelverse/screens/settings.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -14,148 +12,99 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final ScrollController _scrollController = ScrollController();
-
-  final Controller appState = Get.find();
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      appState.loadMoreCurated(
-          scrollController: _scrollController,
-          page: appState.futureCurated.value!.page + 1);
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
+  int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: _scrollController,
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height,
+    return Scaffold(
+        // backgroundColor: Theme.of(context).colorScheme.background,
+        // appBar: AppBar(
+        //   title: Column(
+        //     children: [
+        //       Text('Curated',
+        //           style: GoogleFonts.raleway(
+        //               textStyle: TextStyle(
+        //                   fontSize: 28, fontWeight: FontWeight.w600))),
+        //       Text(
+        //         ' just for you',
+        //         style: GoogleFonts.raleway(
+        //             textStyle: TextStyle(
+        //                 color: Colors.grey.shade700,
+        //                 fontSize: 14,
+        //                 height: 0.8,
+        //                 fontWeight: FontWeight.w400)),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              activeIcon: Icon(
+                Icons.explore,
+              ),
+              icon: Icon(Icons.explore_outlined),
+              label: 'Home',
+              tooltip: 'Home',
+            ),
+            BottomNavigationBarItem(
+              activeIcon: Icon(Icons.subscriptions),
+              icon: Icon(Icons.subscriptions_outlined),
+              label: 'Collections',
+              tooltip: 'Collections',
+            ),
+            BottomNavigationBarItem(
+                activeIcon: Icon(Icons.settings),
+                icon: Icon(Icons.settings_outlined),
+                label: 'Settings',
+                tooltip: 'Settings'),
+          ],
+          currentIndex: currentPageIndex,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          unselectedItemColor: Theme.of(context).colorScheme.secondary,
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
+          elevation: 0,
+          iconSize: 25,
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          onTap: (int index) {
+            setState(() {
+              currentPageIndex = index;
+            });
+          },
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(6.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AnimationLimiter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(milliseconds: 375),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                      curve: Curves.easeOut,
-                      horizontalOffset: 20,
-                      child: FadeInAnimation(
-                        duration: const Duration(milliseconds: 400),
-                        child: widget,
-                        // delay: Duration(milliseconds: 100),
+        body: PageTransitionSwitcher(
+            child: [
+              const Curated(),
+              Collections(),
+              const Settings()
+            ][currentPageIndex],
+            // duration: Duration(milliseconds: 375),
+            transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
+                FadeTransition(
+                  opacity: Tween<double>(
+                    begin: 1,
+                    end: 0,
+                  ).animate(secondaryAnimation),
+                  child: ScaleTransition(
+                    scale: Tween<double>(
+                      begin: 1,
+                      end: 0.9,
+                    ).animate(secondaryAnimation),
+                    child: FadeTransition(
+                      opacity: Tween<double>(
+                        begin: 0,
+                        end: 1,
+                      ).animate(primaryAnimation),
+                      child: ScaleTransition(
+                        scale: Tween<double>(
+                          begin: 0.9,
+                          end: 1.0,
+                        ).animate(primaryAnimation),
+                        child: child,
                       ),
                     ),
-                    children: [
-                      Text(
-                        'Curated',
-                        style: GoogleFonts.raleway(
-                            textStyle: const TextStyle(
-                                fontSize: 28, fontWeight: FontWeight.w600)),
-                      ),
-                      Text(
-                        ' just for you',
-                        style: GoogleFonts.raleway(
-                            textStyle: TextStyle(
-                                color: Colors.grey.shade700,
-                                fontSize: 14,
-                                height: 0.9,
-                                fontWeight: FontWeight.w400)),
-                      ),
-                    ],
                   ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                height: 46,
-                child: AnimationConfiguration.synchronized(
-                  duration: const Duration(milliseconds: 400),
-                  child: ScaleAnimation(
-                    scale: 0.5,
-                    curve: Curves.easeInOut,
-                    child: TextField(
-                      style: GoogleFonts.raleway(
-                          textStyle: const TextStyle(
-                              fontSize: 15, color: Colors.grey)),
-                      decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(0),
-                          prefixIcon: Icon(
-                            Icons.search_rounded,
-                            size: 20,
-                            color: Colors.grey[600],
-                          ),
-                          hintText: 'Search wallpapers',
-                          hintStyle: GoogleFonts.raleway(
-                              textStyle: TextStyle(color: Colors.grey[600])),
-                          fillColor: Colors.lightBlue[50],
-                          border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  width: 0, style: BorderStyle.none),
-                              borderRadius: BorderRadius.circular(40)),
-                          filled: true),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 0, left: 4, right: 4),
-                child: GetBuilder<Controller>(
-                    builder: (state) => AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 375),
-                          transitionBuilder:
-                              (Widget child, Animation<double> animation) {
-                            return ScaleTransition(
-                              scale: animation,
-                              child: child,
-                            );
-                          },
-                          child: state.futureCurated.value != null
-                              ? MasonryGridView.builder(
-                                  // controller: _scrollController,
-                                  physics: const BouncingScrollPhysics(),
-                                  gridDelegate:
-                                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                  ),
-                                  itemCount:
-                                      state.futureCurated.value?.photos.length,
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) => ImgCard(
-                                      photo: state
-                                          .futureCurated.value!.photos[index],
-                                      index: index),
-                                )
-                              : const Padding(
-                                  padding: EdgeInsets.only(top: 30),
-                                  child: Center(
-                                      child: CircularProgressIndicator()),
-                                ),
-                        )),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+                )));
   }
 }

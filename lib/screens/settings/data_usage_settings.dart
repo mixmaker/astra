@@ -16,6 +16,7 @@ class _DataUsageSettingsState extends State<DataUsageSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         leading: GestureDetector(
             onTap: () => Navigator.pop(context),
             child: const Icon(
@@ -24,8 +25,10 @@ class _DataUsageSettingsState extends State<DataUsageSettings> {
             )),
         middle: Text('Data Usage Settings',
             style: GoogleFonts.raleway(
-                textStyle: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.w600))),
+                textStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600))),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
@@ -52,7 +55,10 @@ class _DataUsageSettingsState extends State<DataUsageSettings> {
                     style: GoogleFonts.raleway(
                         textStyle: TextStyle(
                             height: 0.9,
-                            color: Colors.grey.shade700,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer
+                                .withAlpha(200),
                             fontSize: 12,
                             fontWeight: FontWeight.w600)),
                   )
