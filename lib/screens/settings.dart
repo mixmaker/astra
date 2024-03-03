@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:astra/screens/settings/about_page.dart';
 import 'package:astra/screens/settings/general_settings.dart';
-import 'package:astra/screens/settings/data_usage_settings.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -109,8 +108,10 @@ class SettingsCard extends StatelessWidget {
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap: () => Navigator.push(
-            context, CupertinoPageRoute(builder: (context) => screen)),
+        onTap: () => PersistentNavBarNavigator.pushNewScreen(context,
+            screen: screen, withNavBar: false),
+        //  Navigator.push(
+        // context, CupertinoPageRoute(builder: (context) => screen)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

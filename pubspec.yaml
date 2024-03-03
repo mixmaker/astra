@@ -1,7 +1,7 @@
 name: astra
 description: A wallpaper app built with flutter.
 publish_to: 'none'
-version: 0.2.0+3
+version: 0.3.0+4
 
 environment:
   sdk: '>=3.0.2 <4.0.0'
@@ -24,6 +24,7 @@ dependencies:
   shared_preferences:
   flutter_native_splash:
   flutter_carousel_widget:
+  persistent_bottom_nav_bar:
 
 dev_dependencies:
   flutter_test:

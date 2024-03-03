@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class LatestCard extends StatelessWidget {
   LatestCard(
@@ -53,8 +54,10 @@ class LatestCard extends StatelessWidget {
                   top: 20, bottom: 40, left: 10, right: 0),
               child: InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context, CupertinoPageRoute(builder: (context) => page));
+                  PersistentNavBarNavigator.pushNewScreen(context,
+                      screen: page, withNavBar: false);
+                  // Navigator.push(
+                  //     context, CupertinoPageRoute(builder: (context) => page));
                 },
                 child: Container(
                     width: 320,

@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:astra/constants/api_const.dart';
 import 'package:astra/screens/imageview.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../models/wall.dart';
 
@@ -28,19 +30,30 @@ class ImgCard extends StatelessWidget {
                 curve: Curves.easeOut,
                 child: FadeInAnimation(
                     delay: const Duration(milliseconds: 80),
-                    child: Padding(
-                      padding: const EdgeInsets.all(6),
+                    child: Container(
+                      margin: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       child: GestureDetector(
                           // splashColor: Colors.transparent,
                           // highlightColor: Colors.transparent,
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (context) => ImageView(
-                                        info: info,
-                                        index: index,
-                                        heroKey: heroKey)));
+                            PersistentNavBarNavigator.pushNewScreen(context,
+                                screen: ImageView(
+                                    info: info, index: index, heroKey: heroKey),
+                                withNavBar: false);
+                            // Navigator.push(
+                            //     context,
+                            //     CupertinoPageRoute(
+                            //         builder: (context) => ImageView(
+                            //             info: info,
+                            //             index: index,
+                            //             heroKey: heroKey)));
                           },
                           child: Hero(
                             tag: heroKey,

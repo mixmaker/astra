@@ -208,16 +208,25 @@ class _ImageViewState extends State<ImageView> {
                       ),
                     ),
                     Center(
-                      child: Hero(
-                        tag: widget.heroKey,
-                        child: ClipRRect(
+                      child: Container(
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          child: FadeInImage.memoryNetwork(
-                            width: MediaQuery.of(context).size.width / 1.4,
-                            height: MediaQuery.of(context).size.height / 1.4,
-                            fit: BoxFit.cover,
-                            placeholder: kTransparentImage,
-                            image: imgUrl,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.05),
+                        ),
+                        child: Hero(
+                          tag: widget.heroKey,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: FadeInImage.memoryNetwork(
+                              width: MediaQuery.of(context).size.width / 1.4,
+                              height: MediaQuery.of(context).size.height / 1.4,
+                              fit: BoxFit.cover,
+                              placeholder: kTransparentImage,
+                              image: imgUrl,
+                            ),
                           ),
                         ),
                       ),

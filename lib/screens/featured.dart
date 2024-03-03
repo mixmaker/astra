@@ -18,6 +18,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:astra/components/imgcard.dart';
 import 'package:astra/state/state.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class Featured extends StatefulWidget {
   const Featured({super.key});
@@ -62,21 +63,30 @@ class _FeaturedState extends State<Featured> {
                       children: [
                         const SizedBox(width: 30),
                         const SizedBox(height: 80, child: Logo()),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondaryContainer,
-                              borderRadius: BorderRadius.circular(16)),
-                          child: IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        fullscreenDialog: true,
-                                        builder: (context) => const Search()));
-                              },
-                              icon: const Icon(Icons.search_rounded)),
+                        Hero(
+                          tag: 'searchhero',
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
+                                borderRadius: BorderRadius.circular(16)),
+                            child: IconButton(
+                                onPressed: () {
+                                  PersistentNavBarNavigator.pushNewScreen(
+                                      context,
+                                      screen: const Search(),
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.fade,
+                                      withNavBar: false);
+                                  // Navigator.push(
+                                  //     context,
+                                  //     CupertinoPageRoute(
+                                  //         fullscreenDialog: true,
+                                  //         builder: (context) => const Search()));
+                                },
+                                icon: const Icon(Icons.search_rounded)),
+                          ),
                         )
                       ],
                     ),

@@ -32,7 +32,11 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
+        body: Hero(
+      tag: 'searchhero',
+      child: Material(
+        type: MaterialType.transparency,
+        child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Container(
                 padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
@@ -53,7 +57,9 @@ class _SearchState extends State<Search> {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         margin: const EdgeInsets.only(top: 20),
                         decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: Colors.white60),
+                            border: Border.all(
+                                width: 1,
+                                color: Theme.of(context).dividerColor),
                             borderRadius: BorderRadius.circular(40)),
                         child: TextField(
                             controller: textController,
@@ -91,7 +97,7 @@ class _SearchState extends State<Search> {
                               ),
                             ))
                         : GridView.builder(
-                            padding: EdgeInsets.zero,
+                            padding: EdgeInsets.only(top: 30),
                             physics: const BouncingScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -111,6 +117,8 @@ class _SearchState extends State<Search> {
                               );
                             })
                   ],
-                ))));
+                ))),
+      ),
+    ));
   }
 }

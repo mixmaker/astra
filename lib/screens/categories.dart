@@ -12,6 +12,7 @@ import 'package:astra/constants/api_const.dart';
 import 'package:astra/screens/category_page.dart';
 import 'package:astra/state/state.dart';
 import 'package:get/get.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class CategoriesScreen extends StatelessWidget {
   CategoriesScreen({super.key});
@@ -157,17 +158,30 @@ class CategoriesScreen extends StatelessWidget {
                                                       milliseconds: 500),
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          CupertinoPageRoute(
-                                                              builder: (context) => CategoryPage(
+                                                      PersistentNavBarNavigator
+                                                          .pushNewScreen(
+                                                              context,
+                                                              screen: CategoryPage(
                                                                   name: controller
                                                                       .stockCategories()
                                                                       .data[
                                                                           index]
                                                                       .name,
                                                                   type:
-                                                                      'Popular')));
+                                                                      'Popular'),
+                                                              withNavBar:
+                                                                  false);
+                                                      // Navigator.push(
+                                                      //     context,
+                                                      //     CupertinoPageRoute(
+                                                      //         builder: (context) => CategoryPage(
+                                                      //             name: controller
+                                                      //                 .stockCategories()
+                                                      //                 .data[
+                                                      //                     index]
+                                                      //                 .name,
+                                                      //             type:
+                                                      //                 'Popular')));
                                                     },
                                                     child: Column(
                                                       children: [
@@ -261,17 +275,30 @@ class CategoriesScreen extends StatelessWidget {
                                                       milliseconds: index * 10),
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          CupertinoPageRoute(
-                                                              builder: (context) => CategoryPage(
+                                                      PersistentNavBarNavigator
+                                                          .pushNewScreen(
+                                                              context,
+                                                              screen: CategoryPage(
                                                                   name: controller
                                                                       .colorCategories()
                                                                       .data[
                                                                           index]
                                                                       .name,
                                                                   type:
-                                                                      'Popular')));
+                                                                      'Popular'),
+                                                              withNavBar:
+                                                                  false);
+                                                      // Navigator.push(
+                                                      //     context,
+                                                      //     CupertinoPageRoute(
+                                                      //         builder: (context) => CategoryPage(
+                                                      //             name: controller
+                                                      //                 .colorCategories()
+                                                      //                 .data[
+                                                      //                     index]
+                                                      //                 .name,
+                                                      //             type:
+                                                      //                 'Popular')));
                                                     },
                                                     child: Column(
                                                       children: [
@@ -382,16 +409,26 @@ class CategoriesScreen extends StatelessWidget {
                                                     milliseconds: 500),
                                                 child: GestureDetector(
                                                   onTap: () {
-                                                    Navigator.push(
-                                                        context,
-                                                        CupertinoPageRoute(
-                                                            builder: (context) => CategoryPage(
+                                                    PersistentNavBarNavigator
+                                                        .pushNewScreen(context,
+                                                            screen: CategoryPage(
                                                                 name: controller
                                                                     .casualCategories()
                                                                     .data[index]
                                                                     .name,
                                                                 type:
-                                                                    'Popular')));
+                                                                    'Popular'),
+                                                            withNavBar: false);
+                                                    // Navigator.push(
+                                                    //     context,
+                                                    //     CupertinoPageRoute(
+                                                    //         builder: (context) => CategoryPage(
+                                                    //             name: controller
+                                                    //                 .casualCategories()
+                                                    //                 .data[index]
+                                                    //                 .name,
+                                                    //             type:
+                                                    //                 'Popular')));
                                                   },
                                                   child: Padding(
                                                     padding:

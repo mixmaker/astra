@@ -179,11 +179,22 @@ class _AboutState extends State<About> {
                   ),
                 ],
               ),
-              Text('Made with ♥️ by Shoumik Kumbhakar',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.raleway(
-                      textStyle: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w600))),
+              Column(
+                children: [
+                  Text('Made with ♥️ by Shoumik Kumbhakar',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.raleway(
+                          textStyle: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600))),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('report bugs at support@shoumik.in',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.raleway(
+                            textStyle: const TextStyle(fontSize: 14))),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
