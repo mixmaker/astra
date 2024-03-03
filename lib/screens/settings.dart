@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pixelverse/screens/settings/about_page.dart';
-import 'package:pixelverse/screens/settings/appearance_settings.dart';
-import 'package:pixelverse/screens/settings/data_usage_settings.dart';
+import 'package:astra/screens/settings/about_page.dart';
+import 'package:astra/screens/settings/general_settings.dart';
+import 'package:astra/screens/settings/data_usage_settings.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -69,14 +69,14 @@ class Settings extends StatelessWidget {
                 ),
                 children: [
                   SettingsCard(
-                      title: 'Appearance',
-                      subtitle: 'tweak the look & feel of the app',
-                      screen: AppearanceSettings()),
-                  SettingsCard(
-                    title: 'Data usage',
-                    subtitle: 'modify the quality of images',
-                    screen: DataUsageSettings(),
-                  ),
+                      title: 'General',
+                      subtitle: 'theme, data usage, nsfw filter etc.',
+                      screen: GeneralSettings()),
+                  // SettingsCard(
+                  //   title: 'Data usage',
+                  //   subtitle: 'modify the quality of images',
+                  //   screen: DataUsageSettings(),
+                  // ),
                   SettingsCard(
                     title: 'About',
                     subtitle: 'info about the app & developer',

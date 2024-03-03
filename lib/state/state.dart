@@ -1,131 +1,74 @@
-import 'dart:convert';
+import 'package:astra/models/list_of_walls.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pixelverse/models/collection_from_id.dart';
-import 'package:pixelverse/models/curated.dart';
-import 'package:http/http.dart' as http;
-import 'package:pixelverse/models/featured_collections.dart';
+import 'package:astra/models/categories_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/wall.dart';
 
 class Controller extends GetxController {
-  var futureCurated = Rxn<Curated>();
-  var futureFeaturedColl = Rxn<FeaturedCollections>();
-  var futureCollectionFromId = Rxn<CollectionfromId>();
-  var isDarkTheme = RxBool(false);
-
-  void changeTheme(state) {
-    isDarkTheme.value = state;
-    Get.changeThemeMode(Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-    update();
-  }
+  final featuredWalls = ListOfWalls(data: <Wall>[]).obs;
+  final randomWalls = ListOfWalls(data: <Wall>[]).obs;
+  final latestWalls = ListOfWalls(data: <Wall>[]).obs;
+  final popularWalls = ListOfWalls(data: <Wall>[]).obs;
+  final casualCategories = Categories(data: <Category>[]).obs;
+  final colorCategories = Categories(data: <Category>[]).obs;
+  final stockCategories = Categories(data: <Category>[]).obs;
+  final isDarkTheme = false.obs;
+  final isFamilyFilter = true.obs;
 
   @override
-  Future<void> onInit() async {
+  void onInit() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final themePref = prefs.getBool('isDarkTheme') ?? false;
+    isDarkTheme.value = themePref;
+    Get.changeThemeMode(themePref ? ThemeMode.dark : ThemeMode.light);
+    final familyFilterPref = prefs.getBool('isFamilyFilter') ?? true;
+    isFamilyFilter.value = familyFilterPref;
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: themePref ? Brightness.light : Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+    ));
     super.onInit();
-    futureCurated.value = await getCuratedPhotos(page: 1);
-    futureFeaturedColl.value = await getFeaturedCollections();
+  }
+
+  void changeTheme(state) async {
+    isDarkTheme.value = state;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isDarkTheme', state);
+    Get.changeThemeMode(state ? ThemeMode.dark : ThemeMode.light);
     update();
   }
 
-  Future<void> initColFromId({required String id, required int page}) async {
-    CollectionfromId result = await getCollectionfromId(id: id, page: page);
-    futureCollectionFromId.value = result;
-    update();
+  updateFeatured(newVal) {
+    featuredWalls(ListOfWalls(data: newVal.data));
   }
 
-  // setCurated(data) => {futureCurated.value = data, update()};
-  void loadMoreCurated(
-      {required ScrollController scrollController, required int page}) async {
-    // inspect(appState.futureCurated.value);
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      Curated result = await getCuratedPhotos(page: page);
-      futureCurated.value?.photos.addAll(result.photos);
-      futureCurated.value?.page = result.page;
-      futureCurated.value?.nextPage = result.nextPage;
-      update();
-    }
+  updateCasual(newVal) {
+    casualCategories(Categories(data: newVal));
   }
 
-  void loadMoreColFromId(
-      {required ScrollController scrollController,
-      required String id,
-      required int page}) async {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      CollectionfromId result = await getCollectionfromId(id: id, page: page);
-      futureCollectionFromId.value?.media.addAll(result.media);
-      futureCollectionFromId.value?.page = result.page;
-      futureCollectionFromId.value?.nextPage = result.nextPage;
-      update();
-    }
+  updateColor(newVal) {
+    colorCategories(Categories(data: newVal));
   }
-}
 
-Future getCuratedPhotos({required int page}) async {
-  final response = await http.get(
-      Uri.parse('https://api.pexels.com/v1/curated?per_page=26&page=$page'),
-      headers: {
-        "Authorization":
-            "563492ad6f91700001000001483cce7cc55d42279bd98f44bf282a0c"
-      });
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return Curated.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load curated');
+  updateStock(newVal) {
+    stockCategories(Categories(data: newVal));
   }
-}
 
-Future getFeaturedCollections() async {
-  final response = await http.get(
-      Uri.parse('https://api.pexels.com/v1/collections/featured'),
-      headers: {
-        "Authorization":
-            "563492ad6f91700001000001483cce7cc55d42279bd98f44bf282a0c"
-      });
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return FeaturedCollections.fromJson(
-        jsonDecode(response.body) as Map<String, dynamic>);
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load curated');
+  updateRandom(newVal) {
+    randomWalls(ListOfWalls(data: newVal.data));
   }
-}
 
-Future getCollectionfromId({required String id, required int page}) async {
-  final response = await http.get(
-      Uri.parse(
-          'https://api.pexels.com/v1/collections/$id?page=$page&per_page=26'),
-      headers: {
-        "Authorization":
-            "563492ad6f91700001000001483cce7cc55d42279bd98f44bf282a0c"
-      });
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return CollectionfromId.fromJson(
-        jsonDecode(response.body) as Map<String, dynamic>);
-    // if (collection == null) {
-    //   setState(() {
-    //     collection = result;
-    //   });
-    // } else if (collection!.page > 1) {
-    //   setState(() {
-    // collection?.media.addAll(result.media);
-    // collection?.nextPage = result.nextPage;
-    // collection?.page = result.page;
-    //   });
-    //   inspect(collection);
-    // }
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load curated');
+  updateLatest(newVal) {
+    latestWalls(ListOfWalls(data: newVal.data));
+  }
+
+  updatePopular(newVal) {
+    popularWalls(ListOfWalls(data: newVal.data));
   }
 }

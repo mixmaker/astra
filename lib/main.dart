@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pixelverse/screens/home.dart';
-import 'package:pixelverse/state/state.dart';
-import 'package:pixelverse/themes/dark_theme.dart';
-import 'package:pixelverse/themes/light_theme.dart';
+import 'package:astra/screens/home.dart';
+import 'package:astra/state/state.dart';
+import 'package:astra/themes/dark_theme.dart';
+import 'package:astra/themes/light_theme.dart';
 
 void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  //   statusBarColor: Colors.transparent,
+  //   statusBarIconBrightness: Brightness.dark,
+  //   systemNavigationBarColor: Colors.transparent,
+  // ));
   runApp(MainApp());
 }
 
@@ -17,25 +23,24 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        // systemStatusBarContrastEnforced: true,
-        systemNavigationBarColor:
-            Theme.of(context).colorScheme.secondaryContainer,
-        systemNavigationBarDividerColor: Colors.transparent,
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness:
-            appState.isDarkTheme.value ? Brightness.dark : Brightness.light));
     return GetMaterialApp(
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode:
             appState.isDarkTheme.value ? ThemeMode.dark : ThemeMode.light,
-        // theme: ThemeData(
-        //     splashColor: Colors.transparent,
+        // theme: lightTheme.copyWith(
+        //   splashColor: Colors.transparent,
+        //   pageTransitionsTheme: const PageTransitionsTheme(
+        //     builders: <TargetPlatform, PageTransitionsBuilder>{
+        //       TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+        //       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        //     },
+        //   ),
         //     textTheme: GoogleFonts.ralewayTextTheme(
         //       Theme.of(context).textTheme, //font changes
         //     ),
         //     fontFamily: GoogleFonts.raleway().fontFamily),
+        // ),
         debugShowCheckedModeBanner: false,
         home: Home()
         // body: const <Widget>[

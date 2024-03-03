@@ -1,3 +1,4 @@
+import 'package:astra/components/logo.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -48,10 +49,27 @@ class _AboutState extends State<About> {
             children: [
               Column(
                 children: [
-                  ClipRect(
-                    clipBehavior: Clip.antiAlias,
-                    child: Image.asset('assets/icon/iconwt.png', width: 180),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRect(
+                          child: Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: Image.asset(
+                          'assets/icon/icon.png',
+                          fit: BoxFit.cover,
+                          width: 80,
+                          height: 120,
+                        ),
+                      )),
+                      Logo(),
+                    ],
                   ),
+                  // ClipRect(
+                  //   clipBehavior: Clip.antiAlias,
+                  //   child: Image.asset('assets/icon/iconwt.png', width: 240),
+                  // ),
                   // CircleAvatar(
                   //   radius: 50,
                   //   child: ClipOval(
@@ -85,29 +103,18 @@ class _AboutState extends State<About> {
                                   .withAlpha(200),
                               fontSize: 14,
                               fontWeight: FontWeight.w500))),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                      'An open source wallpaper app made with flutter using the pexels api.',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.raleway(
-                          textStyle: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer
-                                  .withAlpha(200),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600))),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 30.0, top: 10),
-                    child: InkWell(
-                      onTap: () => launchURL(Uri.parse('https://pexels.com')),
-                      child: Image.network(
-                          'https://images.pexels.com/lib/api/pexels.png',
-                          height: 35),
-                    ),
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text('A wallpaper app made with flutter...',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.raleway(
+                            textStyle: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer
+                                    .withAlpha(200),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600))),
                   ),
                 ],
               ),
