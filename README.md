@@ -1,3 +1,3 @@
-# pixelverse
+# astra
 
-A new Flutter project.
+A wallpaper app built using Flutter.
